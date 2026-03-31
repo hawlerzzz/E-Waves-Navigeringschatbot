@@ -126,3 +126,8 @@ body {
     transition: opacity .15s, transform .15s;
     position: absolute;
 }   
+
+.fab .icon-chat{
+    opacity: 1;
+    transform: scale(1), rotate(0deg);
+}

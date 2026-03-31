@@ -1,0 +1,68 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-waves Navigeringschatbot</title>
+        <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="chat-root">
+
+        <!--WIDGET-->
+        <div class="shell" id="shell">
+
+            <!--HEADER-->
+            <div class="hd">
+                <div class="hd-mark">
+                    <img style="width: 40px; height: 40px; border-radius: 10px;" src="images/ewaves-site-logo-1.png" alt="E-waves Logo">
+                </div>
+                <div class="hd-copy">
+                    <strong>E-Waves</strong>
+                    <span>Digital assistent</span>
+                    <span class="hd-status">
+                        <span class="hd-status-dot"></span>
+                        Online
+                    </span>
+                </div>
+                <button class="hd-close" title="Lukk" onclick="toggleChat()">
+                    <!--LEGGE INN SVG IKON HER-->
+                </button>
+            </div>
+
+            <!--FEED-->
+            <div class="feed" id="feed"></div>
+
+            <!--INPUT-->
+            <div class="bar">
+                <input class="bar-input" id="inp" type="text" placeholder="Skriv her..." autocomplete="off"
+                    onkeydown="if(event.key === 'Enter') send()"/>
+                <button class="bar-btn" onclick="send()" aria-label="send">
+                    <svg>
+                        <!--LEGGE INN SVG IKON HER-->
+                    </svg>
+                </button>
+            </div>
+
+            <!--WIDGET FOOTER-->
+            <div class="ft">
+                <a href="https://ewaves.no" target="_blank">www.ewaves.no</a>
+                &nbsp;|&nbsp;
+                <a href="https://ewaves.no/personvern" target="_blank">Personvern</a>
+            </div>
+
+        </div>
+
+        <!--FAB-->
+        <button class="fab open" id="fab" onclick="toggleChat()" aria-label="open chat">
+            <svg class="icon-chat">
+                <!--LEGGE INN SVG IKON HER-->
+            </svg>
+            <svg class="icon-close">
+                <!--LEGGE INN SVG IKON HER-->
+            </svg>
+            <span class="fab-badge hidden" id="badge"></span>
+        </button>
+    </div>
+</body>
+</html>

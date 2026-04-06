@@ -290,7 +290,28 @@ function matchIntent(q) {
                 botRow(intent.reply, intent.cards || [], intent.chips || []);
                 return;
             }
-
+            const pages = searchPages(q);
+            if (pages.length) {
+                resultRows(pages);
+                return;
+            }
+            botRow(
+                'Jeg fant ikke noe spesifikt på det. Prøv en av lenkene nedenfor eller ta kontakt direkte.',
+                [],
+                ['Arrangementer', 'Bli Medlem', 'Om Nettverket', 'Kontakt']
+            );
         }
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+        const d = document.createElement('div');
+        d.className = 'ts';
+        d.textContent = 'I dag';
+        feed().appendChild(d);
 
-    }}
+        botRow('Hei! Jeg er E-Waves sin navigeringsassistent. Hvordan kan jeg hjelpe deg i dag?', 
+            [], 
+            ['Arrangementer', 'Bli Medlem', 'Kontakt Oss', 'Digin', 'Om Nettverket', 'Partnerskap For Vekst', 'Medlemsbedriftene'],
+            220
+        );
+    });
+}

@@ -1,6 +1,6 @@
 :root {
-    --brand: 00859b;
-    --brand-dark: 006d7a;
+    --brand: #00859b;
+    --brand-dark: #006d7a;
     --brand-light: white;
     --brand-mid: #b3dde3;
 
@@ -74,7 +74,7 @@ body {
 .fab {
     width: 50px;
     height: 50px;
-    border-radius: var(--r20);
+    border-radius: 50%;
     background-color: var(--brand);
     border: none;
     cursor: pointer;
@@ -107,6 +107,7 @@ body {
     border-radius: 50%;
     border: 2px solid var(--bg);
     transition: opacity 0.2s ease;
+    background: #ef4444;
 }
 
 .fab-badge.hidden {
@@ -146,7 +147,8 @@ body {
 }
 
 .hd {
-    background: var(--brand) padding 0 20px;
+    background: var(--brand); 
+    padding: 0 20px;
     height: 64px;
     display: flex;
     align-items: center;
@@ -202,7 +204,7 @@ body {
     animation: status-pulse 2.6s ease-in-out infinite; /* Puls-animajson for å gjøre det mer levende */
 }
 
-@keyframes statusPulse {
+@keyframes status-pulse {
     0%,
     100% {
         opacity: 1;

@@ -84,7 +84,7 @@ const PAGES = {
 
 const INTENTS = [
     {
-        t: ['hei, hallo, hi, halla, god dag, god morgen, heisann, hey, yo, hallo der, god kveld, god natt, hei på deg, hallo på deg, god dag til deg', 'hallo', 'hi', 'halla', 'god dag', 'god morgen', 'heisann', 'hey', 'yo', 'hallo der', 'god kveld', 'god natt', 'hei på deg', 'hallo på deg', 'god dag til deg'],
+        t: ['hei', 'hallo', 'hi', 'halla', 'god dag', 'god morgen', 'heisann', 'hey', 'yo', 'hallo der', 'god kveld', 'god natt', 'hei på deg', 'hallo på deg', 'god dag til deg', 'hallo', 'hi', 'halla', 'god dag', 'god morgen', 'heisann', 'hey', 'yo', 'hallo der', 'god kveld', 'god natt', 'hei på deg', 'hallo på deg', 'god dag til deg'],
         reply: ['Hei! Hvordan kan jeg hjelpe deg i dag?'],
         chips: ["Aktuelt", "Bli Medlem", "Kontakt Oss", "Digin", "Arrangementer", "E-hub Agder", "Om Nettverket", "Partnerskap For Vekst", "Medlemsbedriftene", "digin"]
     },
@@ -154,9 +154,9 @@ function matchIntent(q) {
         if (i.t.some(t => ql.includes(t))) {
             return i;
         }
-        return null;
     }
 }
+return null;
 
 function searchPages(q) {
     const words = q.toLowerCase().split(/\s+/).filter(Boolean);

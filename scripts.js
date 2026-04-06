@@ -153,165 +153,166 @@ function matchIntent(q) {
     for (const i of INTENTS) {
         if (i.t.some(t => ql.includes(t))) {
             return i;
-            return null;
         }
-        function searchPages(q) {
-            const words = q.toLowerCase().split(/\s+/).filter(Boolean);
-            return Object.entries(PAGES)
-                .map(([id, p]) => {
-                    const tl = p.title.toLowerCase();
-                    const dl = p.desc.toLowerCase();
-                    let score = 0;
-                    words.forEach(w => {
-                        if (tl.includes(w)) score += 30;
-                        if (dl.includes(w)) score += 10;
-                        if (p.kw.some(k => k.includes(w) || w.includes(k))) score += 20;
-                    });
-                    return { id, ...p, score };
-                })
-                .filter(p => p.score > 0)
-                .sort((a, b) => b.score - a.score)
-                .slice(0, 3);
+        return null;
+    }
+}
 
-        }
-
-        const feed = () => document.getElementById('feed');
-
-        function scroll() {
-            requestAnimationFrame(() => {
-                const f = feed();
-                f.scrollTop = f.scrollHeight;
+function searchPages(q) {
+    const words = q.toLowerCase().split(/\s+/).filter(Boolean);
+    return Object.entries(PAGES)
+        .map(([id, p]) => {
+            const tl = p.title.toLowerCase();
+            const dl = p.desc.toLowerCase();
+            let score = 0;
+            words.forEach(w => {
+                if (tl.includes(w)) score += 30;
+                if (dl.includes(w)) score += 10;
+                if (p.kw.some(k => k.includes(w) || w.includes(k))) score += 20;
             });
-        }
+            return { id, ...p, score };
+            })
+        .filter(p => p.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 3);
+}
+
+const feed = () => document.getElementById('feed');
+
+function scroll() {
+    requestAnimationFrame(() => {
+        const f = feed();
+        f.scrollTop = f.scrollHeight;
+        });
+}
         
-        function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-        function fmt(s) { return esc(s).replace(/\n/g, '<br>'); }
+function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function fmt(s) { return esc(s).replace(/\n/g, '<br>'); }
 
-        function userRow(text){
-            const d = document.createElement('div');
-            d.className = 'row u';
-            d.innerHTML = `<div class="av">Du</div><div class="bbl">${esc(text)}</div>`;
-            feed().appendChild(d);
-            scroll();
-        }
+function userRow(text){
+    const d = document.createElement('div');
+    d.className = 'row u';
+    d.innerHTML = `<div class="av">Du</div><div class="bbl">${esc(text)}</div>`;
+    feed().appendChild(d);
+    scroll();
+}
 
-        function showTyping() {
-            removeTyping();
-            const d = document.createElement('div');
-            d.className = 'row b';
-            d.id = 'typing';
-            d.innerHTML = `<div class="av">EW</div><div class="bbl"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
-            feed().appendChild(d);
-            scroll();
-        }
+function showTyping() {
+    removeTyping();
+    const d = document.createElement('div');
+    d.className = 'row b';
+    d.id = 'typing';
+    d.innerHTML = `<div class="av">EW</div><div class="bbl"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+    feed().appendChild(d);
+    scroll();
+}
 
-        function removeTyping() { document.getElementById('typing')?.remove(); }
+function removeTyping() { document.getElementById('typing')?.remove(); }
 
-        function buildCards(ids){
-            if (!ids?.length) return '';
-            const html =ids.map(id => {
-                const p = PAGES[id]; if (!p) return '';
-                return `<a class="card" href="${p.url}" target="_blank">
-                    <div class="card-head>
+function buildCards(ids){
+    if (!ids?.length) return '';
+    const html =ids.map(id => {
+        const p = PAGES[id]; if (!p) return '';
+        return `<a class="card" href="${p.url}" target="_blank">
+                <div class="card-head">
                         <span class="card-title">${p.title}</span>
                         <span class="card-arrow">→</span>
                     </div>
-                    div class="card-desc">${p.desc}</div>
+                    <div class="card-desc">${p.desc}</div>
                 </a>`;
             }).join('');
             return `<div class="cards">${html}</div>`;
-
-        }
-
-        function buildChips(labels) {
-            if (!labels?.length) return '';
-            const html = labels.map(l =>
-                `<button class="chip" onclick="quickAsk(this,'${l}')">${l}</button>`
-            ).join('');
-            return `<div class="chips">${html}</div>`;
-        }
-
-        function botRow(text, cards = [], chips = [], delay = 460) {
-            showTyping();
-            setTimeout(() => {
-                removeTyping();
-                const d = document.createElement('div');
-                d.className = 'row b';
-                d.innerHTML = `<div class="av">EW</div><div class="bbl">${fmt(text)}${buildCards(cards)}${buildChips(chips)}</div>`;
-                feed().appendChild(d);
-                scroll();
-                if (!isOpen) {
-                    document.getElementById('badge').classList.remove('hidden');
-                }
-            }, delay + Math.random() * 160);
-        }
-
-        function resultRows(pages) {
-            showTyping();
-            setTimeout(() => {
-                removeTyping();
-                const d = document.createElement('div');
-                d.className = 'row b';
-                const cards = pages.map(p =>
-                    `<a class="card" href="${p.url}" target="_blank">
-                        <div class="card-head>
-                            <span class="card-title">${p.title}</span>
-                            <span class="card-arrow">→</span>
-                        </div>
-                        <div class="card-desc">${p.desc}</div>
-                    </a>`
-                ).join('');
-                d.innerHTML = `<div class="av">EW</div><div class="bbl">${cards}</div>`;
-                feed().appendChild(d);
-                scroll();
-            }, 500);
-        }
-
-        function send() {
-            const el = document.getElementById('inp');
-            const q = el.value.trim();
-            if (!q) return;
-            el.value = '';
-            el.focus();
-            userRow(q);
-            respond(q);
-        }
-
-        function quickAsk(btn, label) {
-            btn.disabled = true;
-            btn.style.opacity = 0.6;
-            userRow(label);
-            respond(label);
-        }
-
-        function respond(q) {
-            const intent = matchIntent(q);
-            if (intent) {
-                botRow(intent.reply, intent.cards || [], intent.chips || []);
-                return;
-            }
-            const pages = searchPages(q);
-            if (pages.length) {
-                resultRows(pages);
-                return;
-            }
-            botRow(
-                'Jeg fant ikke noe spesifikt på det. Prøv en av lenkene nedenfor eller ta kontakt direkte.',
-                [],
-                ['Arrangementer', 'Bli Medlem', 'Om Nettverket', 'Kontakt']
-            );
-        }
-    }
-    window.addEventListener('DOMContentLoaded', () => {
-        const d = document.createElement('div');
-        d.className = 'ts';
-        d.textContent = 'I dag';
-        feed().appendChild(d);
-
-        botRow('Hei! Jeg er E-Waves sin navigeringsassistent. Hvordan kan jeg hjelpe deg i dag?', 
-            [], 
-            ['Arrangementer', 'Bli Medlem', 'Kontakt Oss', 'Digin', 'Om Nettverket', 'Partnerskap For Vekst', 'Medlemsbedriftene'],
-            220
-        );
-    });
 }
+
+function buildChips(labels) {
+    if (!labels?.length) return '';
+    const html = labels.map(l =>
+        `<button class="chip" onclick="quickAsk(this,'${l}')">${l}</button>`
+    ).join('');
+    return `<div class="chips">${html}</div>`;
+}
+
+function botRow(text, cards = [], chips = [], delay = 460) {
+    showTyping();
+    setTimeout(() => {
+        removeTyping();
+        const d = document.createElement('div');
+        d.className = 'row b';
+        d.innerHTML = `<div class="av">EW</div><div class="bbl">${fmt(text)}${buildCards(cards)}${buildChips(chips)}</div>`;
+        feed().appendChild(d);
+        scroll();
+        if (!isOpen) {
+            document.getElementById('badge').classList.remove('hidden');
+        }
+    }, delay + Math.random() * 160);
+}
+
+function resultRows(pages) {
+    showTyping();
+    setTimeout(() => {
+        removeTyping();
+        const d = document.createElement('div');
+        d.className = 'row b';
+        const cards = pages.map(p =>
+            `<a class="card" href="${p.url}" target="_blank">
+                <div class="card-head">
+                    <span class="card-title">${p.title}</span>
+                    <span class="card-arrow">→</span>
+                </div>
+                <div class="card-desc">${p.desc}</div>
+            </a>`
+        ).join('');
+        d.innerHTML = `<div class="av">EW</div><div class="bbl">${cards}</div>`;
+        feed().appendChild(d);
+        scroll();
+    }, 500);
+}
+
+function send() {
+    const el = document.getElementById('inp');
+    const q = el.value.trim();
+    if (!q) return;
+    el.value = '';
+    el.focus();
+    userRow(q);
+    respond(q);
+}
+
+function quickAsk(btn, label) {
+    btn.disabled = true;
+    btn.style.opacity = 0.6;
+    userRow(label);
+    respond(label);
+}
+
+function respond(q) {
+    const intent = matchIntent(q);
+    if (intent) {
+        botRow(intent.reply, intent.cards || [], intent.chips || []);
+        return;
+        }
+        const pages = searchPages(q);
+        if (pages.length) {
+            resultRows(pages);
+            return;
+        }
+        botRow(
+            'Jeg fant ikke noe spesifikt på det. Prøv en av lenkene nedenfor eller ta kontakt direkte.',
+            [],
+            ['Arrangementer', 'Bli Medlem', 'Om Nettverket', 'Kontakt']
+        );
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const d = document.createElement('div');
+    d.className = 'ts';
+    d.textContent = 'I dag';
+    feed().appendChild(d);
+
+    botRow('Hei! Jeg er E-Waves sin navigeringsassistent. Hvordan kan jeg hjelpe deg i dag?', 
+        [], 
+        ['Arrangementer', 'Bli Medlem', 'Kontakt Oss', 'Digin', 'Om Nettverket', 'Partnerskap For Vekst', 'Medlemsbedriftene'],
+        220
+    );
+});
+

@@ -38,7 +38,7 @@ const PAGES = {
         desc: "Regional e-handelshub — ressurser og samarbeid for Agder.",
         kw: ["e-hub", "agder", "ehandelshub", "ressurser", "samarbeid", "nettverk", "bedrifter", "prosjekter", "initiativ", "digitalisering", "ehandel", "logistikk", "teknologi", "innovasjon"]
     },
-    "Bli Medlem": {
+    "bli-medlem": {
         title: "Bli Medlem",
         url: "https://www.ewaves.no/bli-medlem/",
         desc: "Meld deg inn og få tilgang til nettverk, arrangementer og ressurser for bedrifter i Agder",
@@ -48,7 +48,10 @@ const PAGES = {
         title: "Om Nettverket",
         url: "https://www.ewaves.no/om-nettverket/",
         desc: "Hver er E-waves, hva gjør vi og hvordan kan du bli en del av vårt nettverk i Agder",
-        kw: ['bli', 'medlem', 'medlemskap', 'meld', 'melde', 'innmelding', 'join', 'pris', 'kostnad', 'kontingent', 'fordeler', 'registrer', 'søknad'],
+        kw: ['om', 'om oss', 'om nettverket', 'hvem er', 'hvem er e-waves', 'hvem er ewaves',
+        'hva gjør', 'hva er', 'hva tilbyr', 'fortell om', 'bakgrunn', 'historikk',
+        'visjon', 'misjon', 'formål', 'organisasjon', 'info', 'informasjon',
+        'introduksjon', 'nettverk', 'agder', 'bli en del', 'del av'],
     },
     partnerskap: {
         title: "Partnerskap For Vekst",
@@ -262,7 +265,7 @@ function resultRows(pages) {
                 <div class="card-desc">${p.desc}</div>
             </a>`
         ).join('');
-        d.innerHTML = `<div class="av">EW</div><div class="bbl">${cards}</div>`;
+        d.innerHTML = `<div class="av">EW</div><div class="bbl">Her er relevante sider:<div class="cards">${cards}</div></div>`;
         feed().appendChild(d);
         scroll();
     }, 500);

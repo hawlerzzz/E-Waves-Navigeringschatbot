@@ -158,8 +158,9 @@ function matchIntent(q) {
             return i;
         }
     }
+    return null;
 }
-return null;
+
 
 function searchPages(q) {
     const words = q.toLowerCase().split(/\s+/).filter(Boolean);

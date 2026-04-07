@@ -11,13 +11,21 @@
     --surface: white;
     --bg: #f9fafb;
 
-    --font: "Lato", sans-serif;
+    --font: 'Lato', sans-serif;
 
     --r4: 4px;
     --r8: 8px;
     --r12: 12px;
     --r16: 16px;
     --r20: 20px;
+
+    /* Layout constants */
+
+    --shell-w:390px;
+    --shell-h:640px;
+    --fab-size: 56px;
+    --gap: 12px;
+    --edge: 20px;
 }
 
 *,
@@ -28,39 +36,52 @@
     padding: 0;
 }
 
+/*BODY & IFRAME
+    transparent bakgrunn og ingen padding for å unngå 
+    uønskede mellomrom og sikre at bakgrunnsfargen fra
+    CSS vises korrekt
+*/
+
+
+
 body {
     font-family: var(--font);
-    background-color: var(--bg);
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    min-height: 100vh;
-    padding: 24px;
+    background: transparent;
     -webkit-font-smoothing: antialiased;
+    /* fyller iframe viewport */
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
-/* --WRAPPER-- */
+/* -- ROOT WRAPPER
+    pinnet til bottom right av iframe viewport
+-- */
 .chat-root {
+    position: fixed;
+    bottom: var(--edge);
+    right: var(--edge);
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 12px;
+    gap: var(--gap);
+    z-index: 9999;
 }
 
 .shell {
-    width: 390px;
-    height: 640px;
+    width: var(--shell-w);
+    height: var(--shell-h);
+    max-width: calc(100vh -var(--edge) * 2);
+    max-height: calc(100vh - var(--fab-size) - var(--gap) * 2 - var(--edge));
     border-radius: var(--r20);
     background-color: var(--surface);
-    /*SHADOW MIDLERTIDIG, MÅ ENDRES FOR Å MATCHE VANLIG SHADOW VALUES*/
-    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+    
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     transform-origin: bottom right;
-    transition:
-    opacity 0.2s ease,
-    transform 0.2s cubic-bezier(0.35, 1.5, 0.5, 1);
+    transition:opacity 0.2s ease, transform 0.2s cubic-bezier(0.35, 1.5, 0.5, 1);
 }
 
 .shell.hidden {
@@ -72,8 +93,8 @@ body {
 /*--FAB--*/
 
 .fab {
-    width: 50px;
-    height: 50px;
+    width: var(--fab-size);
+    height: var(--fab-size);
     border-radius: 50%;
     background-color: var(--brand);
     border: none;
@@ -81,8 +102,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    /*SHADOW MIDLERTIDIG, MÅ ENDRES FOR Å MATCHE VANLIG SHADOW VALUES*/
-    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 133, 155, 0.35);
     transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
     flex-shrink: 0;
     position: relative;
@@ -107,7 +127,7 @@ body {
     border-radius: 50%;
     border: 2px solid var(--bg);
     transition: opacity 0.2s ease;
-    background: #ef4444;
+    background: #22c55e;
 }
 
 .fab-badge.hidden {
@@ -130,7 +150,7 @@ body {
 
 .fab .icon-chat {
     opacity: 1;
-    transform: scale(1), rotate(0deg);
+    transform: scale(1) rotate(0deg);
 }
 
 .fab .icon-close {
@@ -148,7 +168,7 @@ body {
 
 .hd {
     background: var(--brand); 
-    padding: 0 20px;
+    padding: 0 16px;
     height: 64px;
     display: flex;
     align-items: center;
@@ -167,16 +187,33 @@ body {
     flex-shrink: 0;
 }
 
+.hd-mark img{
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+}
+
+.hd-name {
+    font-size: 11.5px;
+    color: white;
+    font-weight: 400;
+}   
+
 .hd-copy {
     flex: 1;
+    min-width: 0;
 }
 
 .hd-copy strong {
     display: block;
     font-size: 14px;
+    font-weight: 600;
     color: var(--brand-light);
     letter-spacing: -0.1px;
     line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .hd-copy .hd-sub {
@@ -192,6 +229,7 @@ body {
     font-size: 11.5px;
     color: rgba(255, 255, 255, 0.65);
     font-weight: 400;
+    margin-top: 2px;
 }
 
 .hd-status-dot {
@@ -242,6 +280,7 @@ body {
     stroke-width: 2;
     fill: none;
     stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 /*---FEED---*/
@@ -249,6 +288,7 @@ body {
 .feed {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 20px 16px 12px;
     display: flex;
     flex-direction: column;
@@ -270,6 +310,7 @@ body {
 .row {
     display: flex;
     gap: 8px;
+    animation: rise 0.22s ease both;
 }
 
 .row.u {
@@ -302,6 +343,7 @@ body {
     justify-content: center;
     font-size: 12px;
     font-weight: 700;
+    letter-spacing: -0.3px;
 }
 
 .row.b .av {
@@ -320,6 +362,7 @@ body {
     font-size: 13.5px;
     line-height: 1.58;
     word-break: break-word;
+    overflow-wrap: anywhere;
     border-radius: var(--r12);
     padding: 10px 14px;
 }
@@ -424,10 +467,9 @@ body {
 }
 
 .card-arrow {
-    width: 16px;
-    height: 16px;
     color: var(--brand);
     flex-shrink: 0;
+    font-size: 14px;
 }
 
 .card-arrow svg {
@@ -488,7 +530,7 @@ body {
     text-align: center;
     font-size: 11px;
     color: var(--ink-3);
-    margin: -4px 0 -2px;
+    
 }
 
 /* ── INPUT BAR ── */

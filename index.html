@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-waves Navigeringschatbot</title>
-        <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,23 +11,26 @@
     <div class="chat-root">
 
         <!--WIDGET-->
-        <div class="shell" id="shell">
+        <div class="shell hidden" id="shell">
 
             <!--HEADER-->
             <div class="hd">
                 <div class="hd-mark">
-                    <img style="width: 40px; height: 40px; border-radius: 10px;" src="images/ewaves-site-logo-1.png" alt="E-waves Logo">
+                    <img src="images/cropped-Logo-E-waves-ny.png" alt="E-waves Logo">
                 </div>
                 <div class="hd-copy">
-                    <strong>E-Waves</strong>
-                    <span>Digital assistent</span>
+                    <strong>Wavey Lite</strong>
+                    <span class="hd-name">Digital assistent</span>
                     <span class="hd-status">
                         <span class="hd-status-dot"></span>
                         Online
                     </span>
                 </div>
                 <button class="hd-close" title="Lukk" onclick="toggleChat()">
-                    <!--LEGGE INN SVG IKON HER-->
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
                 </button>
             </div>
 
@@ -36,11 +39,18 @@
 
             <!--INPUT-->
             <div class="bar">
-                <input class="bar-input" id="inp" type="text" placeholder="Skriv her..." autocomplete="off"
-                    onkeydown="if(event.key === 'Enter') send()"/>
+                <input 
+                    class="bar-input" 
+                    id="inp" 
+                    type="text" 
+                    placeholder="Skriv her..." 
+                    autocomplete="off"
+                    onkeydown="if(event.key === 'Enter') send()"
+                />
                 <button class="bar-btn" onclick="send()" aria-label="send">
-                    <svg>
-                        <!--LEGGE INN SVG IKON HER-->
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="22" y1="2" x2="11" y2="13"/>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
                     </svg>
                 </button>
             </div>
@@ -55,12 +65,13 @@
         </div>
 
         <!--FAB-->
-        <button class="fab open" id="fab" onclick="toggleChat()" aria-label="open chat">
-            <svg class="icon-chat"
-                svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        <button class="fab" id="fab" onclick="toggleChat()" aria-label="Åpne chat">
+            <svg class="icon-chat" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
             </svg>
-            <svg class="icon-close"
-                svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            <svg class="icon-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
             <span class="fab-badge hidden" id="badge"></span>
         </button>

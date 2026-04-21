@@ -1,13 +1,11 @@
-
-
 let isOpen = false;
-
+ 
 function toggleChat() {
     isOpen = !isOpen;
     const shell = document.getElementById('shell');
     const fab = document.getElementById('fab');
     const badge = document.getElementById('badge');
-
+ 
     if (isOpen) {
         shell.classList.remove('hidden');
         fab.classList.add('open');
@@ -18,12 +16,12 @@ function toggleChat() {
         fab.classList.remove('open');
     }
 }
-
+ 
 const PAGES = {
     hjem: {
         title: "Hjem",
         url: "https://www.ewaves.no/",
-        desc: "Startsiden - Oversikt iver E-waves og hva nettverket tilbyr",
+        desc: "Startsiden - Oversikt over E-waves og hva nettverket tilbyr",
         kw: ["hjem", "forside", "startside", "oversikt", "ewaves", "nettverk", "tilbud", "tjenester", "produkter", "løsninger", "om oss"]
     },
     arrangement: {
@@ -56,7 +54,7 @@ const PAGES = {
     partnerskap: {
         title: "Partnerskap For Vekst",
         url: "https://www.ewaves.no/partnerskap-for-vekst/",
-        desc: "Partnerskap og sammarbeid for vekst i e-handelsbransjen.",
+        desc: "Partnerskap og samarbeid for vekst i e-handelsbransjen.",
         kw: ["partnerskap", "vekst", "samarbeid", "bedrifter", "agder", "tilbud", "fordeler", "samarbeidsmuligheter", "nettverk", "forretningsmuligheter", "partnerskapsprogram"]
     },
     kontakt: {
@@ -84,21 +82,25 @@ const PAGES = {
         kw: ["medlemsbedriftene", "medlemmer", "bedrifter", "nettverk", "agder", "oversikt", "medlemsliste", "samarbeidspartnere", "forretningspartnere", "nettverksbedrifter"]
     }
 };
-
+ 
 const INTENTS = [
     {
-        t: ['hei', 'hallo', 'hi', 'halla', 'god dag', 'god morgen', 'heisann', 'hey', 'yo', 'hallo der', 'god kveld', 'god natt', 'hei på deg', 'hallo på deg', 'god dag til deg', 'hallo', 'hi', 'halla', 'god dag', 'god morgen', 'heisann', 'hey', 'yo', 'hallo der', 'god kveld', 'god natt', 'hei på deg', 'hallo på deg', 'god dag til deg'],
-        reply: ['Hei! Hvordan kan jeg hjelpe deg i dag?'],
-        chips: ["Aktuelt", "Bli Medlem", "Kontakt Oss", "Digin", "Arrangementer", "E-hub Agder", "Om Nettverket", "Partnerskap For Vekst", "Medlemsbedriftene", "digin"]
+        // FIX 1: reply var en array ['Hei! ...'] — endret til streng
+        t: ['hei', 'hallo', 'hi', 'halla', 'god dag', 'god morgen', 'heisann', 'hey', 'yo', 'hallo der', 'god kveld', 'god natt', 'hei på deg', 'hallo på deg', 'god dag til deg'],
+        reply: 'Hei! Hvordan kan jeg hjelpe deg i dag?',
+        cards: [],
+        chips: ["Aktuelt", "Bli Medlem", "Kontakt Oss", "Digin", "Arrangementer", "E-hub Agder", "Om Nettverket", "Partnerskap For Vekst", "Medlemsbedriftene"]
     },
     {
         t: ['takk', 'tusen takk', 'takk skal du ha', 'takk for hjelpen', 'takk for det', 'takk for assistansen', 'takk for støtten', 'takk for informasjonen', 'takk for svaret', 'takk for at du hjelper meg', 'thanks'],
         reply: 'Bare hyggelig! Er det noe annet jeg kan hjelpe med?',
-        chips: ['Arrangementer', 'Bli Medlem', 'Kontakt'],
+        cards: [],
+        chips: ['Arrangementer', 'Bli Medlem', 'Kontakt Oss'],
     },
     {
         t: ['hva er e-waves', 'hva er ewaves', 'hva gjør', 'hva tilbyr', 'fortell om'],
         reply: 'E-Waves er et fagnettverk for e-handelsbedrifter i Agder. Nettverket samler aktører for å dele kunnskap, bygge relasjoner og fremme vekst i bransjen.',
+        cards: ['om'],
         chips: ['Bli Medlem', 'Arrangementer', 'Om Nettverket'],
     },
     {
@@ -111,46 +113,61 @@ const INTENTS = [
         t: ['arrangement', 'event', 'treff', 'webinar', 'samling', 'program', 'kalender', 'kommende', 'neste treff'],
         reply: 'Vi arrangerer faglige samlinger, bedriftsbesøk og webinarer gjennom året.',
         cards: ['arrangement'],
-        chips: ['Bli Medlem', 'Kontakt'],
+        chips: ['Bli Medlem', 'Kontakt Oss'],
     },
     {
         t: ['bli med', 'bli medlem', 'meld', 'melde', 'innmelding', 'join', 'pris', 'kostnad', 'kontingent', 'fordeler'],
         reply: 'Som medlem får du tilgang til arrangementer, faglig nettverk og ressurser for e-handelsutvikling i Agder.',
         cards: ['bli-medlem'],
-        chips: ['Om Nettverket', 'Kontakt'],
+        chips: ['Om Nettverket', 'Kontakt Oss'],
     },
     {
         t: ['partner', 'partnerskap', 'sponsor', 'vekst'],
         reply: 'E-Waves tilbyr partnerskap for bedrifter som ønsker å støtte og bidra til vekst i e-handelsmiljøet.',
         cards: ['partnerskap'],
-        chips: ['Bli Medlem', 'Kontakt'],
+        chips: ['Bli Medlem', 'Kontakt Oss'],
     },
     {
         t: ['bedrift', 'bedrifter', 'hvem er med', 'stormberg', 'multicom', 'blivakker', 'elefun', 'mizuno'],
         reply: 'E-Waves har et bredt spekter av e-handelsbedrifter som medlemmer.',
-        cards: ['medlemsbedrifter'],
-        chips: ['Bli Medlem', 'Kontakt'],
+        // FIX 2: 'medlemsbedrifter' → 'medlemsbedriftene' (riktig PAGES-nøkkel)
+        cards: ['medlemsbedriftene'],
+        chips: ['Bli Medlem', 'Kontakt Oss'],
     },
     {
         t: ['e-hub', 'ehub', 'hub agder'],
         reply: 'E-hub Agder er en regional ressurs- og samarbeidsplattform for e-handelsbransjen.',
         cards: ['ehub'],
-        chips: ['Bli Medlem', 'Kontakt'],
+        chips: ['Bli Medlem', 'Kontakt Oss'],
     },
     {
         t: ['aktuelt', 'nyheter', 'artikler', 'blogg'],
         reply: 'Hold deg oppdatert med de siste nyhetene og artiklene om E-Waves og e-handelsbransjen.',
         cards: ['aktuelt'],
-        chips: ['Bli Medlem', 'Kontakt'],
+        chips: ['Bli Medlem', 'Kontakt Oss'],
     },
     {
         t: ['digin', 'digin.no', 'hvem driver', 'bak e-waves', 'initiativ', 'grunnlegger'],
         reply: 'E-Waves er initiert av Digin — et digitalt vekstmiljø basert i Kristiansand. Digin jobber med å utvikle digitale næringer og fellesskap i Agder, og er drivkraften bak E-Waves-nettverket.',
         cards: ['digin'],
-        chips: ['Om Nettverket', 'Kontakt'],
+        chips: ['Om Nettverket', 'Kontakt Oss'],
     },
 ];
-
+ 
+// Maps chip display labels directly to PAGES keys so they always navigate correctly
+// even if the label doesn't match any intent trigger
+const CHIP_PAGE_MAP = {
+    'Arrangementer': 'arrangement',
+    'Bli Medlem': 'bli-medlem',
+    'Kontakt Oss': 'kontakt',
+    'Digin': 'digin',
+    'Om Nettverket': 'om',
+    'Partnerskap For Vekst': 'partnerskap',
+    'Medlemsbedriftene': 'medlemsbedriftene',
+    'E-hub Agder': 'ehub',
+    'Aktuelt': 'aktuelt',
+};
+ 
 function matchIntent(q) {
     const ql = q.toLowerCase();
     for (const i of INTENTS) {
@@ -160,10 +177,23 @@ function matchIntent(q) {
     }
     return null;
 }
-
-
+ 
+function respondToChip(label) {
+    const pageKey = CHIP_PAGE_MAP[label];
+    if (pageKey) {
+        const page = PAGES[pageKey];
+        if (page) {
+            botRow(`Her er informasjon om ${page.title}:`, [pageKey], []);
+            return true;
+        }
+    }
+    return false;
+}
+ 
+ 
 function searchPages(q) {
-    const words = q.toLowerCase().split(/\s+/).filter(Boolean);
+    const words = q.toLowerCase().split(/\s+/).filter(w => w.length >= 3);
+    if (!words.length) return [];
     return Object.entries(PAGES)
         .map(([id, p]) => {
             const tl = p.title.toLowerCase();
@@ -172,7 +202,7 @@ function searchPages(q) {
             words.forEach(w => {
                 if (tl.includes(w)) score += 30;
                 if (dl.includes(w)) score += 10;
-                if (p.kw.some(k => k.includes(w) || w.includes(k))) score += 20;
+                if (p.kw.some(k => k.includes(w))) score += 20;
             });
             return { id, ...p, score };
             })
@@ -180,9 +210,9 @@ function searchPages(q) {
         .sort((a, b) => b.score - a.score)
         .slice(0, 3);
 }
-
+ 
 const feed = () => document.getElementById('feed');
-
+ 
 function scroll() {
     requestAnimationFrame(() => {
         const f = feed();
@@ -192,7 +222,7 @@ function scroll() {
         
 function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 function fmt(s) { return esc(s).replace(/\n/g, '<br>'); }
-
+ 
 function userRow(text){
     const d = document.createElement('div');
     d.className = 'row u';
@@ -200,7 +230,7 @@ function userRow(text){
     feed().appendChild(d);
     scroll();
 }
-
+ 
 function showTyping() {
     removeTyping();
     const d = document.createElement('div');
@@ -210,12 +240,12 @@ function showTyping() {
     feed().appendChild(d);
     scroll();
 }
-
+ 
 function removeTyping() { document.getElementById('typing')?.remove(); }
-
+ 
 function buildCards(ids){
     if (!ids?.length) return '';
-    const html =ids.map(id => {
+    const html = ids.map(id => {
         const p = PAGES[id]; if (!p) return '';
         return `<a class="card" href="${p.url}" target="_blank">
                 <div class="card-head">
@@ -227,15 +257,16 @@ function buildCards(ids){
             }).join('');
             return `<div class="cards">${html}</div>`;
 }
-
+ 
 function buildChips(labels) {
     if (!labels?.length) return '';
-    const html = labels.map(l =>
-        `<button class="chip" onclick="quickAsk(this,'${l}')">${l}</button>`
-    ).join('');
+    const html = labels.map((l, i) => {
+        const safe = l.replace(/'/g, '&#39;');
+        return `<button class="chip" onclick="quickAsk(this,'${safe}')">${esc(l)}</button>`;
+    }).join('');
     return `<div class="chips">${html}</div>`;
 }
-
+ 
 function botRow(text, cards = [], chips = [], delay = 460) {
     showTyping();
     setTimeout(() => {
@@ -250,7 +281,7 @@ function botRow(text, cards = [], chips = [], delay = 460) {
         }
     }, delay + Math.random() * 160);
 }
-
+ 
 function resultRows(pages) {
     showTyping();
     setTimeout(() => {
@@ -269,9 +300,12 @@ function resultRows(pages) {
         d.innerHTML = `<div class="av">EW</div><div class="bbl">Her er relevante sider:<div class="cards">${cards}</div></div>`;
         feed().appendChild(d);
         scroll();
+        if (!isOpen) {
+            document.getElementById('badge').classList.remove('hidden');
+        }
     }, 500);
 }
-
+ 
 function send() {
     const el = document.getElementById('inp');
     const q = el.value.trim();
@@ -281,14 +315,16 @@ function send() {
     userRow(q);
     respond(q);
 }
-
+ 
 function quickAsk(btn, label) {
     btn.disabled = true;
     btn.style.opacity = 0.6;
     userRow(label);
+    // Check chip map first for direct page navigation
+    if (respondToChip(label)) return;
     respond(label);
 }
-
+ 
 function respond(q) {
     const intent = matchIntent(q);
     if (intent) {
@@ -303,20 +339,19 @@ function respond(q) {
         botRow(
             'Jeg fant ikke noe spesifikt på det. Prøv en av lenkene nedenfor eller ta kontakt direkte.',
             [],
-            ['Arrangementer', 'Bli Medlem', 'Om Nettverket', 'Kontakt']
+            ['Arrangementer', 'Bli Medlem', 'Om Nettverket', 'Kontakt Oss']
         );
 }
-
+ 
 window.addEventListener('DOMContentLoaded', () => {
     const d = document.createElement('div');
     d.className = 'ts';
     d.textContent = 'I dag';
     feed().appendChild(d);
-
+ 
     botRow('Hei! Jeg er E-Waves sin navigeringsassistent. Hvordan kan jeg hjelpe deg i dag?', 
         [], 
         ['Arrangementer', 'Bli Medlem', 'Kontakt Oss', 'Digin', 'Om Nettverket', 'Partnerskap For Vekst', 'Medlemsbedriftene'],
         220
     );
 });
-
